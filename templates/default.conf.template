@@ -1,0 +1,12 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    location ${BASE_PATH} {
+        proxy_pass ${PROXY_URL};
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection upgrade;
+        proxy_set_header Accept-Encoding gzip;
+    }
+}

@@ -1,0 +1,15 @@
+version: "2.2"
+
+services:
+  code-server:
+    image: kodelib/code-server:3.8.0
+    environment:
+      PASSWORD: "1234567890"
+  
+  sidecar:
+    build: .
+    ports:
+      - 8080:80
+    environment:
+      BASE_PATH: /code/
+      PROXY_URL: http://code-server:8080/

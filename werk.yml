@@ -1,0 +1,28 @@
+version: "1.0"
+
+variables:
+  VERSION: "3.8.0"
+
+jobs:
+  lint:
+    description: Check all Docker files
+    commands:
+      - hadolint --version
+      - find . -type f -name "Dockerfile*" -print0 | xargs -0 -n1 hadolint
+
+  build:
+    description: Build image
+    variables:
+      IMAGE_NAME: kodelib/code-server-sidecar
+    commands:
+      - >
+        docker build .
+        --build-arg VERSION="${VERSION}"
+        --tag "${IMAGE_NAME}:${VERSION}"
+    needs:
+      - lint
+
+  push:
+    description: Push image to Docker Registry
+    commands:
+      - docker push kodelib/code-server-sidecar:$VERSION
